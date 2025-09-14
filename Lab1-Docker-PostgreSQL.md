@@ -104,7 +104,8 @@ docker inspect postgres
 
 **บันทึกผลการทดลอง - Step 1:**
 ```
-ใส่ Screenshot ของผลการรัน docker images ที่นี่
+<img width="631" height="200" alt="image" src="https://github.com/user-attachments/assets/2cb2bf61-f593-420c-88e8-f6eccf1c161b" />
+
 ```
 
 ### Step 2: Create Docker Volume for Data Persistence
