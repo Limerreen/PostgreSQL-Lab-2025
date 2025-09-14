@@ -530,6 +530,11 @@ INSERT INTO hr.employee_orders (employee_id, customer_id, order_date, commission
 3. ผลการใส่ข้อมูลและ query ข้อมูล
 4. ข้อมูลในตาราง employee_orders ที่จะใช้สำหรับ JOIN ข้าม schema
 ```
+<img width="640" height="505" alt="image" src="https://github.com/user-attachments/assets/1824df00-b478-4568-9f8a-239cab9ba9ae" />
+<img width="372" height="224" alt="image" src="https://github.com/user-attachments/assets/ee04cda8-1764-4e7c-9bcd-4c41de1011dd" />
+<img width="415" height="229" alt="image" src="https://github.com/user-attachments/assets/f4e67b84-0768-4a55-9431-0ff67b5b4304" />
+<img width="397" height="194" alt="image" src="https://github.com/user-attachments/assets/84686b49-1773-4d6c-8bd1-129e37eb4fb7" />
+<img width="640" height="505" alt="image" src="https://github.com/user-attachments/assets/827494a9-aa35-4c78-a176-30f5ba18e2f8" />
 
 ### Step 10: ทดสอบการเข้าถึง Schema และ Search Path
 
@@ -626,8 +631,9 @@ INSERT INTO test_permissions (name) VALUES ('Test by lab_user'); -- ทำไม
 ใส่ Screenshot ของ:
 1. ผลการเชื่อมต่อด้วย lab_user
 2. ผลการทดสอบสิทธิ์ต่างๆ
-3. ข้อความ error (ถ้ามี) เมื่อไม่มีสิทธิ์
+3. ข้อความ error (ถ้ามี) เมื่อไม่มีสิทธิ์ : ERROR:  permission denied for schema sales
 ```
+<img width="1348" height="503" alt="image" src="https://github.com/user-attachments/assets/67e950fc-2b79-4c60-89d3-f81f3ed3c9ab" />
 
 ### Step 12: การจัดการ Volume และ Data Persistence
 
@@ -663,6 +669,10 @@ docker run --name postgres-backup-test \
 2. ยืนยันว่าข้อมูลยังอยู่หลังจาก restart
 3. ผลการสร้าง container พร้อม bind mount
 ```
+<img width="1129" height="433" alt="image" src="https://github.com/user-attachments/assets/bfe66422-da00-44a6-8cf7-d51288ca0072" />
+<img width="1371" height="501" alt="image" src="https://github.com/user-attachments/assets/c952722e-b07a-4ba2-9930-62d95a5fc4db" />
+<img width="1279" height="450" alt="image" src="https://github.com/user-attachments/assets/58fb9a03-b7fe-4801-bfa8-6e0cf5bbd742" />
+<img width="664" height="73" alt="image" src="https://github.com/user-attachments/assets/f04efe20-5548-4667-8cfb-9ac0a4b3f6f1" />
 
 ## การตรวจสอบผลงานและ Performance
 
@@ -685,6 +695,9 @@ docker volume inspect postgres-data
 ```
 ใส่ Screenshot ของ resource usage และ volume information ที่นี่
 ```
+<img width="1485" height="582" alt="image" src="https://github.com/user-attachments/assets/0e55dd52-25c7-4616-8469-cad0d13b448a" />
+<img width="1336" height="327" alt="image" src="https://github.com/user-attachments/assets/c1820ca6-5f16-49e3-9b8e-e5168fa187b5" />
+<img width="702" height="473" alt="image" src="https://github.com/user-attachments/assets/9a9c4ced-9561-4e79-bace-4d831f069b9e" />
 
 ### Checkpoint 2: Database Performance และ Configuration
 ```sql
@@ -736,6 +749,9 @@ WHERE state = 'active';
 2. Memory configuration
 3. Active connections
 ```
+<img width="655" height="504" alt="image" src="https://github.com/user-attachments/assets/5cbc3fa8-4395-4559-bca9-13803a87a2b8" />
+<img width="677" height="540" alt="image" src="https://github.com/user-attachments/assets/18510e5c-4c8a-490b-b2c2-b63dcdfa5942" />
+<img width="694" height="518" alt="image" src="https://github.com/user-attachments/assets/f0f92995-b43b-4ef5-8fe4-b47ae744e772" />
 
 ## การแก้ไขปัญหาเบื้องต้น
 
