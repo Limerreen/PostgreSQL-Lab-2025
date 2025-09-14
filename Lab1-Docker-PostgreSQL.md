@@ -415,12 +415,15 @@ GRANT SELECT ON postgres_test_table TO lab_user;
 2. ผลการรัน \dp test_permissions
 3. ผลการ GRANT commands
 ```
+<img width="429" height="123" alt="image" src="https://github.com/user-attachments/assets/62795c69-50f6-4f37-999e-7d1f2cced090" />
+<img width="622" height="487" alt="image" src="https://github.com/user-attachments/assets/294a5656-e467-4bce-a181-294ddfb3295e" />
+
 **คำถาม
  ```
 Access Privileges   postgres=arwdDxtm/postgres มีความหมายอย่างไร
-
-
+ser postgres มีสิทธิ์ ทุกอย่าง บนตาราง (insert, select, update, delete, truncate, references, trigger, merge) สิทธิ์ทั้งหมดนี้ถูกกำหนดโดย owner postgres
  ```
+
 ### Step 9: Schema Management และ Namespace
 
 ```sql
