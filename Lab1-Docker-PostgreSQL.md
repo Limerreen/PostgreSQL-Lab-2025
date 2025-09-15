@@ -806,8 +806,14 @@ docker volume create postgres-data
 - Volume: `multi-postgres-data`
 
 ```bash
-# พื้นที่สำหรับคำตอบ - เขียน command ที่ใช้
-
+# docker run -d \
+  --name multi-postgres \
+  -e POSTGRES_PASSWORD=multipass123 \
+  -p 5434:5432 \
+  --memory="1500m" \
+  --cpus="1.5" \
+  -v multi-postgres-data:/var/lib/postgresql/data \
+  postgres
 ```
 
 **ผลการทำแบบฝึกหัด 1:**
@@ -817,6 +823,9 @@ docker volume create postgres-data
 2. docker ps แสดง container ใหม่
 3. docker stats แสดงการใช้ resources
 ```
+<img width="568" height="187" alt="image" src="https://github.com/user-attachments/assets/af4c2215-f3b1-4231-aa0c-c9071821610a" />
+<img width="598" height="351" alt="image" src="https://github.com/user-attachments/assets/fad21635-2026-41a4-9d62-cdbd67f1fc94" />
+<img width="607" height="290" alt="image" src="https://github.com/user-attachments/assets/9264d6ae-18cf-4431-a1f5-34439422a653" />
 
 ### แบบฝึกหัด 2: User Management และ Security
 **คำสั่ง**: สร้างระบบผู้ใช้ที่สมบูรณ์:
@@ -832,8 +841,19 @@ docker volume create postgres-data
    - `admin_user` (รหัสผ่าน: `admin123`) - เป็นสมาชิกของ db_admins
 
 ```sql
--- พื้นที่สำหรับคำตอบ - เขียน SQL commands ที่ใช้
+-- CREATE ROLE app_developers;
+CREATE ROLE data_analysts;
+CREATE ROLE db_admins;
 
+-- สร้าง Users และกำหนด password + assign roles
+CREATE USER dev_user WITH PASSWORD 'dev123';
+GRANT app_developers TO dev_user;
+
+CREATE USER analyst_user WITH PASSWORD 'analyst123';
+GRANT data_analysts TO analyst_user;
+
+CREATE USER admin_user WITH PASSWORD 'admin123';
+GRANT db_admins TO admin_user;
 ```
 
 **ผลการทำแบบฝึกหัด 2:**
@@ -843,6 +863,8 @@ docker volume create postgres-data
 2. ผลการรัน \du แสดงผู้ใช้ทั้งหมด
 3. ผลการทดสอบเชื่อมต่อด้วย user ต่างๆ
 ```
+<img width="616" height="482" alt="image" src="https://github.com/user-attachments/assets/e671f6ee-c0b0-46d3-9b3a-fa7e6291d67a" />
+<img width="656" height="502" alt="image" src="https://github.com/user-attachments/assets/a63aa668-0024-4c4b-8609-85a1812bb8eb" />
 
 ### แบบฝึกหัด 3: Schema Design และ Complex Queries
 **คำสั่ง**: สร้างระบบฐานข้อมูลร้านค้าออนไลน์:
@@ -986,8 +1008,66 @@ INSERT INTO ecommerce.order_items (order_id, product_id, quantity, price) VALUES
    - หาลูกค้าที่ซื้อสินค้ามากที่สุด
 
 ```sql
--- พื้นที่สำหรับคำตอบ - เขียน SQL commands ทั้งหมด
+-- CREATE SCHEMA ecommerce;
+CREATE SCHEMA analytics;
+CREATE SCHEMA audit;
 
+CREATE TABLE ecommerce.categories (
+    category_id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE ecommerce.products (
+    product_id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    price NUMERIC(10,2),
+    category_id INT REFERENCES ecommerce.categories(category_id),
+    stock INT
+);
+
+CREATE TABLE ecommerce.customers (
+    customer_id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE,
+    phone TEXT,
+    address TEXT
+);
+
+CREATE TABLE ecommerce.orders (
+    order_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES ecommerce.customers(customer_id),
+    order_date TIMESTAMP,
+    status TEXT,
+    total NUMERIC(10,2)
+);
+
+CREATE TABLE ecommerce.order_items (
+    order_item_id SERIAL PRIMARY KEY,
+    order_id INT REFERENCES ecommerce.orders(order_id),
+    product_id INT REFERENCES ecommerce.products(product_id),
+    quantity INT,
+    price NUMERIC(10,2)
+);
+SELECT p.name, SUM(oi.quantity) AS total_sold
+FROM ecommerce.order_items oi
+JOIN ecommerce.products p ON oi.product_id = p.product_id
+GROUP BY p.name
+ORDER BY total_sold DESC
+LIMIT 5;
+SELECT c.name AS category, SUM(oi.quantity * oi.price) AS total_sales
+FROM ecommerce.order_items oi
+JOIN ecommerce.products p ON oi.product_id = p.product_id
+JOIN ecommerce.categories c ON p.category_id = c.category_id
+GROUP BY c.name
+ORDER BY total_sales DESC;
+SELECT cu.name AS customer, SUM(o.total) AS total_spent
+FROM ecommerce.orders o
+JOIN ecommerce.customers cu ON o.customer_id = cu.customer_id
+GROUP BY cu.name
+ORDER BY total_spent DESC
+LIMIT 1;
 ```
 
 **ผลการทำแบบฝึกหัด 3:**
@@ -998,6 +1078,11 @@ INSERT INTO ecommerce.order_items (order_id, product_id, quantity, price) VALUES
 3. ผลการรัน queries ที่สร้าง
 4. การวิเคราะห์ข้อมูลที่ได้
 ```
+<img width="574" height="405" alt="image" src="https://github.com/user-attachments/assets/fa562eae-2d1c-4df1-8f26-2583598d432f" />
+<img width="699" height="509" alt="image" src="https://github.com/user-attachments/assets/595ee768-3b36-4287-9486-adaf5a1939f1" />
+<img width="407" height="265" alt="image" src="https://github.com/user-attachments/assets/f825bc8b-fb21-4908-843a-65f9d8e48bac" />
+<img width="600" height="363" alt="image" src="https://github.com/user-attachments/assets/84520a1f-75ba-4e46-8e25-95f6c0d29f1c" />
+<img width="626" height="318" alt="image" src="https://github.com/user-attachments/assets/2aa9cf4a-1016-4226-a6f0-b80f8469c15e" />
 
 
 ## การทดสอบความเข้าใจ
